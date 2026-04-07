@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 // import TrustBanner from "@/components/TrustBanner";
+import AboutUs from "@/components/AboutUs";
 import Services from "@/components/Services";
 import PortfolioGallery from "@/components/PortfolioGallery";
 import Testimonials from "@/components/Testimonials";
@@ -12,10 +13,12 @@ export default function Home() {
       <Navbar />
       <Hero />
       {/* <TrustBanner /> */}
-  <Services />
-      <PortfolioGallery />  
-    
+     
+      <Services />
+      <PortfolioGallery />
+
       <Testimonials />
+       <AboutUs />
       <Footer />
     </main>
   );

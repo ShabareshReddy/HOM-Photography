@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const heroImages = [
   "/hom1.jfif",
@@ -13,6 +13,9 @@ const heroImages = [
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, 400]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
@@ -24,7 +27,7 @@ export default function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Images with AnimatePresence */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <motion.div style={{ y }} className="absolute inset-[0] w-full h-[120%] -top-[10%] z-0 overflow-hidden">
         <AnimatePresence initial={false}>
           <motion.img
             key={currentIndex}
@@ -42,7 +45,7 @@ export default function Hero() {
         </AnimatePresence>
         {/* Dark overlay for better text readability */}
         {/* <div className="absolute inset-0 bg-gradient-to-b from-hom-black/60 via-hom-black/40 to-hom-black z-10" /> */}
-      </div>
+      </motion.div>
 
       {/* Content */}
       <div className="relative z-20 text-center px-4 max-w-5xl mx-auto mt-20">
