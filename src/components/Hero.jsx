@@ -45,17 +45,17 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 text-center px-4 sm:px-6 w-full max-w-5xl mx-auto mt-20">
-        <p className="font-playfair text-white/70 font-medium tracking-widest sm:tracking-[0.3em] md:tracking-[0.5em] uppercase text-xs sm:text-sm mb-4 sm:mb-6 animate-fade-in-up">
+      <div className="relative z-20 text-center px-4 max-w-5xl mx-auto mt-20">
+        <p className="font-playfair text-white/70 font-medium  tracking-[0.5em] uppercase text-sm md:text-sm mb-6 animate-fade-in-up">
           HOUSE OF MOMENTS PHOTOGRAPHY
         </p>
-        <h1 className="font-instrument-serif font-light italic tracking-relaxed text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight sm:leading-tighter animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+        <h1 className="font-instrument-serif font-light italic tracking-relaxed text-3xl md:text-4xl lg:text-6xl text-white  leading-tighter animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
           WELCOME TO <br className="hidden md:block" />
         </h1>
-        <h1 className="font-noto-serif-display tracking-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 sm:mb-5 leading-tight sm:leading-tighter animate-fade-in-up">
+        <h1 className="font-noto-serif-display tracking-tight text-3xl md:text-4xl lg:text-7xl text-white mb-5 leading-tighter animate-fade-in-up">
           HOM PHOTOGRAPHY
         </h1>
-        <p className="font-birthstone text-white/80 text-2xl sm:text-3xl md:text-4xl max-w-xs sm:max-w-md md:max-w-2xl mx-auto mb-8 sm:mb-10 animate-fade-in-up font-light" style={{ animationDelay: "0.4s" }}>
+        <p className="font-birthstone text-white/80 text-2xl md:text-3xl  mx-auto mb-10 animate-fade-in-up font-light" style={{ animationDelay: "0.4s" }}>
           Every frame tells a story — of love, light, and timeless beauty.
           We turn your moments into memories you can feel.
         </p>

@@ -138,13 +138,13 @@ export default function SwagStyleCards() {
   const totalLength = word1.length + word2.length;
 
   return (
-    <section ref={containerRef} className="relative h-[500vh] bg-white">
+    <section ref={containerRef} className="relative h-[500vh] bg-white overflow-x-clip">
       {/* Huge Sticky Text behind cards */}
       <div
         className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-0 pointer-events-none"
       >
-        <h1 className="text-[18vw] sm:text-[12vw] font-noto-serif-display text-center uppercase tracking-widest leading-none drop-shadow-sm select-none flex flex-col sm:flex-row items-center">
-          <span className="text-hom-gold sm:pr-6 flex mb-2 sm:mb-0">
+        <h1 className="text-[12vw] font-noto-serif-display text-center uppercase tracking-widest leading-none drop-shadow-sm select-none whitespace-nowrap flex">
+          <span className="text-hom-gold pr-6 flex">
             {word1.map((char, i) => (
               <AnimatedLetter
                 key={`w1-${i}`}
@@ -171,11 +171,11 @@ export default function SwagStyleCards() {
 
       {/* Cards Overlay */}
       <div className="absolute top-0 left-0 w-full h-[500vh]">
-        <div className="sticky top-0 h-screen w-full flex items-center justify-center z-10 px-4">
+        <div className="sticky top-0 h-screen w-full flex items-center justify-center z-10">
 
           {/* LEFT LEAF FRAME */}
-          <div className="absolute left-0 top-[10vh] h-[90vh] w-[25vw] sm:w-[18vw] opacity-40 sm:opacity-80 pointer-events-none select-none flex flex-col items-start justify-center overflow-hidden">
-            <svg viewBox="0 0 200 900" className="w-full h-full" preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <div className="absolute left-0 top-[10vh] h-[90vh] w-[18vw] pointer-events-none select-none flex flex-col items-start justify-center overflow-hidden">
+            <svg viewBox="0 0 200 900" className="w-full h-full opacity-80" preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
               {/* Main stem */}
               <path d="M40 900 Q50 700 30 500 Q10 300 60 0" stroke="#4a7c59" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               {/* Leaf 1 - bottom */}
@@ -205,8 +205,8 @@ export default function SwagStyleCards() {
           </div>
 
           {/* RIGHT LEAF FRAME (mirrored) */}
-          <div className="absolute right-0 top-[10vh] h-[90vh] w-[25vw] sm:w-[18vw] opacity-40 sm:opacity-80 pointer-events-none select-none flex flex-col items-end justify-center overflow-hidden">
-            <svg viewBox="0 0 200 900" className="w-full h-full" style={{ transform: "scaleX(-1)" }} preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <div className="absolute right-0 top-[10vh] h-[90vh] w-[18vw] pointer-events-none select-none flex flex-col items-end justify-center overflow-hidden">
+            <svg viewBox="0 0 200 900" className="w-full h-full opacity-80" style={{ transform: "scaleX(-1)" }} preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
               {/* Main stem */}
               <path d="M40 900 Q50 700 30 500 Q10 300 60 0" stroke="#4a7c59" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               {/* Leaf 1 - bottom */}
@@ -236,7 +236,7 @@ export default function SwagStyleCards() {
           </div>
 
           {/* Service Cards */}
-          <div className="relative w-full max-w-[340px] sm:w-[340px] h-[60vh] min-h-[400px] max-h-[480px]">
+          <div className="relative w-[90vw] max-w-[340px] h-[480px]">
             {cards.map((card, i) => (
               <CardItem
                 key={i}

@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${aboreto.variable} ${notoSerifDisplay.variable} ${instrumentSerif.variable} ${tangerine.variable} ${playfairDisplaySC.variable} ${birthstone.variable} ${spaceGrotesk.variable} ${bodoniModa.variable} ${bodoniModaSC.variable} ${inter.variable} ${playfairDisplay.variable}  h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-white text-black">{children}</body>
+      <body className="min-h-full flex flex-col font-sans bg-white  text-black">{children}</body>
     </html>
   );
 }
