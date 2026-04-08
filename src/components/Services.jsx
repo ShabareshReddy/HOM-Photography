@@ -7,8 +7,8 @@ import Image from "next/image";
 const cards = [
   { title: "Newborn Baby", desc: "Beautiful baby moments.", image: "/newborn.jpg" },
   { title: "Pre Wedding", desc: "Romantic storytelling.", image: "/prewedding.jpg" },
-  { title: "Cinematic Films", desc: "Luxury film experience.", image: "/cinematic.jfif" },
-  { title: "Wedding", desc: "Complete coverage.", image: "/wedding.jfif" },
+  { title: "Cinematic Films", desc: "Luxury film experience.", image: "/cinematic.jpg" },
+  { title: "Wedding", desc: "Complete coverage.", image: "/wedding.jpg" },
   { title: "haldi", desc: "fdsfds", image: "/haaldi.jpg" }
 ];
 
@@ -46,7 +46,7 @@ const CardItem = ({ card, i, smoothProgress, totalCards }) => {
   const start = i * 0.2;
   const end = start + 0.2;
 
-  const baseRotation = i === 0 ? 0 : i % 2 === 0 ? i * -3 : i * 3;
+  const baseRotation = i === 0 ? 0 : i % 2 === 0 ? i * -2 : i * 3;
 
   const y = useTransform(
     smoothProgress,
@@ -74,7 +74,7 @@ const CardItem = ({ card, i, smoothProgress, totalCards }) => {
         opacity,
         zIndex: totalCards - i,
       }}
-      className={`absolute w-full h-full rounded-[1rem] text-hom-gold shadow-2xl flex flex-col justify-end border border-hom-gold/50 origin-bottom overflow-hidden bg-black`}
+      className={`absolute w-full h-full rounded-[1rem] text-hom-gold shadow-2xl flex flex-col justify-end border border-hom-gold/60 origin-bottom overflow-hidden bg-black`}
     >
       <Image
         src={card.image}

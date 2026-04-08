@@ -226,11 +226,12 @@ export default function AboutUs() {
         .ab-leaf-strip {
           display: flex;
           align-items: center;
-          gap: clamp(20px, 4vw, 48px);
+          gap: clamp(20px, 9vw, 90px);
           justify-content: center;
           padding-top: clamp(32px, 5vw, 56px);
           padding-bottom: 4px;
           position: relative;
+          
           z-index: 10;
         }
 
@@ -411,10 +412,10 @@ export default function AboutUs() {
 
             <div className="ab-leaf-strip">
               {[
-                { src: "/leaf-palm.png", label: "Palm" },
-                { src: "/leaf-fern.png", label: "Fern" },
-                { src: "/leaf-tropical.png", label: "Tropical" },
-                { src: "/leaf-abstract.png", label: "Minimal" },
+                { src: "/leaf-palm.png", label: "MOMENTS" },
+                { src: "/leaf-fern.png", label: "STORIES" },
+                { src: "/leaf-tropical.png", label: "EMOTIONS" },
+                { src: "/leaf-abstract.png", label: "MEMORIES" },
               ].map(({ src, label }, i) => (
                 <motion.div
                   key={label}

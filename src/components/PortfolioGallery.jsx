@@ -97,31 +97,31 @@ function useSectionInView(threshold = 0.15) {
 export default function PortfolioGallery() {
   const [activeFilter, setActiveFilter] = useState('All');
   const filters = useSectionInView(0.2);
-  const grid    = useSectionInView(0.08);
-  const footer  = useSectionInView(0.5);
+  const grid = useSectionInView(0.08);
+  const footer = useSectionInView(0.5);
 
   const categories = [
-    { name: 'All',         icon: '/HOM.jpg'          },
-    { name: 'Wedding',     icon: '/wedding.jfif'     },
-    { name: 'Pre-wedding', icon: '/prewedding.jpg'   },
-    { name: 'Haldi',       icon: '/haaldi.jpg'       },
-    { name: 'Cinematic',   icon: '/cinematic.jfif'   },
-    { name: 'Newborn',     icon: '/newborn.jpg'      },
+    { name: 'All', icon: '/HOM.jpg' },
+    { name: 'Wedding', icon: '/wedding.jpg' },
+    { name: 'Pre-wedding', icon: '/prewedding.jpg' },
+    { name: 'Haldi', icon: '/haaldi.jpg' },
+    { name: 'Cinematic', icon: '/cinematic.jpg' },
+    { name: 'Newborn', icon: '/newborn.jpg' },
   ];
 
   const allImages = [
-    { id: 1,  src: '/wedding.jfif',        category: 'Wedding'     },
-    { id: 2,  src: '/prewedding.jpg',      category: 'Pre-wedding' },
-    { id: 3,  src: '/haaldi.jpg',          category: 'Haldi'       },
-    { id: 4,  src: '/cinematic.jfif',      category: 'Cinematic'   },
-    { id: 5,  src: '/newborn.jpg',         category: 'Newborn'     },
-    { id: 6,  src: '/hom1.jfif',          category: 'Wedding'     },
-    { id: 7,  src: '/hom2.jfif',          category: 'Pre-wedding' },
-    { id: 8,  src: '/hom3.jfif',          category: 'Wedding'     },
-    { id: 9,  src: '/hom4.jpg',           category: 'Cinematic'   },
-    { id: 10, src: '/hom5.jfif',          category: 'Haldi'       },
-    { id: 11, src: '/about-portrait.png',  category: 'Wedding'     },
-    { id: 12, src: '/haaldi.jpg',          category: 'Haldi'       },
+    { id: 1, src: '/wedding.jpg', category: 'Wedding' },
+    { id: 2, src: '/prewedding.jpg', category: 'Pre-wedding' },
+    { id: 3, src: '/haaldi.jpg', category: 'Haldi' },
+    { id: 4, src: '/cinematic.jpg', category: 'Cinematic' },
+    { id: 5, src: '/newborn.jpg', category: 'Newborn' },
+    { id: 6, src: '/hom1.jpg', category: 'Wedding' },
+    { id: 7, src: '/hom2.jpg', category: 'Pre-wedding' },
+    { id: 8, src: '/hom3.jpg', category: 'Wedding' },
+    { id: 9, src: '/hom4.jpg', category: 'Cinematic' },
+    { id: 10, src: '/hom5.jpg', category: 'Haldi' },
+    { id: 11, src: '/about-portrait.png', category: 'Wedding' },
+    { id: 12, src: '/haaldi.jpg', category: 'Haldi' },
   ];
 
   const filteredImages =
@@ -158,11 +158,10 @@ export default function PortfolioGallery() {
               className="flex flex-col items-center gap-3 min-w-[80px] flex-shrink-0 group"
             >
               <div
-                className={`w-16 h-16 md:w-20 md:h-20 rounded-full p-[3px] transition-all duration-300 ${
-                  activeFilter === cat.name
-                    ? 'bg-hom-gold scale-110 shadow-lg shadow-hom-gold/20'
-                    : 'bg-gray-100 group-hover:bg-gray-200'
-                }`}
+                className={`w-16 h-16 md:w-20 md:h-20 rounded-full p-[3px] transition-all duration-300 ${activeFilter === cat.name
+                  ? 'bg-hom-gold scale-110 shadow-lg shadow-hom-gold/20'
+                  : 'bg-gray-100 group-hover:bg-gray-200'
+                  }`}
               >
                 <div className="w-full h-full rounded-full border-2 border-white overflow-hidden bg-gray-50">
                   <img
@@ -173,11 +172,10 @@ export default function PortfolioGallery() {
                 </div>
               </div>
               <span
-                className={`text-[11px] md:text-xs font-bold tracking-widest transition-colors ${
-                  activeFilter === cat.name
-                    ? 'text-gray-900'
-                    : 'text-gray-400 group-hover:text-gray-600'
-                }`}
+                className={`text-[11px] md:text-xs font-bold tracking-widest transition-colors ${activeFilter === cat.name
+                  ? 'text-gray-900'
+                  : 'text-gray-400 group-hover:text-gray-600'
+                  }`}
               >
                 {cat.name.toUpperCase()}
               </span>

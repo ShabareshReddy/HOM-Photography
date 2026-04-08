@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
 import Services from "@/components/Services";
 import PortfolioGallery from "@/components/PortfolioGallery";
+import OurTribe from "@/components/OurTribe";
 import Testimonials from "@/components/Testimonials";
 import GetInTouch from "@/components/GetInTouch";
 // import SocialFollow from "@/components/SocialFollow";
@@ -18,6 +19,7 @@ export default function Home() {
      
       <Services />
       <PortfolioGallery />
+      <OurTribe />
 
       <Testimonials />
        <AboutUs />

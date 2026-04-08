@@ -11,11 +11,11 @@ import {
 } from "@/lib/motionVariants";
 
 const heroImages = [
-  "/hom1.jfif",
+  "/hom1.jpg",
   "/hom4.jpg",
-  "/hom2.jfif",
-  "/hom5.jfif",
-  "/hom3.jfif",
+  "/hom2.jpg",
+  "/hom5.jpg",
+  "/hom3.jpg",
 ];
 
 /* ── Reusable kinetic word renderer ─── */
@@ -46,9 +46,7 @@ export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { scrollY } = useScroll();
-  /* parallax: background moves at 40% of scroll, slight scale up */
   const y = useTransform(scrollY, [0, 1000], [0, 280]);
-  const bgScale = useTransform(scrollY, [0, 800], [1, 1.08]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -72,13 +70,11 @@ export default function Hero() {
             key={currentIndex}
             src={heroImages[currentIndex]}
             alt={`House of Moments Photography - Slide ${currentIndex + 1}`}
-            style={{ scale: bgScale }}
-            initial={{ opacity: 0, scale: 1.12 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
-              opacity: { duration: 2, ease: "easeInOut" },
-              scale: { duration: 8, ease: "linear" },
+              opacity: { duration: 0.7, ease: "easeInOut" }
             }}
             className="absolute inset-0 w-full h-full object-cover object-center origin-center"
           />
@@ -103,7 +99,7 @@ export default function Hero() {
 
         {/* ── Kinetic heading row 1 ── */}
         <div className="flex flex-col leading-tighter">
-          <h1 className="font-instrument-serif font-light italic tracking-relaxed text-3xl md:text-4xl lg:text-6xl text-white leading-tighter">
+          <h1 className="font-instrument-serif font-light italic tracking-relaxed text-5xl md:text-4xl lg:text-6xl text-white leading-tighter">
             <AnimatedWord
               text="WELCOME TO"
               stagger={0.045}
@@ -113,7 +109,7 @@ export default function Hero() {
           </h1>
 
           {/* ── Kinetic heading row 2 — slower, more dramatic ── */}
-          <h1 className="font-noto-serif-display font-light tracking-tight text-3xl md:text-4xl lg:text-7xl text-white mb-5 leading-tighter">
+          <h1 className="font-noto-serif-display font-light tracking-tight text-5xl md:text-4xl lg:text-7xl text-white mb-5 leading-tighter">
             <AnimatedWord
               text="HOM PHOTOGRAPHY"
               stagger={0.055}

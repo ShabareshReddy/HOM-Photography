@@ -77,14 +77,14 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center justify-center">
-            <div className="flex font-aboreto items-center bg-white/90 backdrop-blur-xs rounded-full px-2 py-1 shadow-md space-x-0">
+            <div className="flex font-aboreto items-center border border-hom-gold/20 bg-white/90 backdrop-blur-xs rounded-md px-2 py-1 shadow-md">
               {navLinks.map((link) => (
                 <Link
                   key={link.id}
                   href={link.href}
                   onClick={() => handleLinkClick(link.id)}
-                  className={`px-5 py-2 rounded-full text-xs font-semibold transition-all duration-300 ${activeLink === link.id
-                    ? "bg-black/70 text-white"
+                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${activeLink === link.id
+                    ? "bg-hom-gold/55 text-black"
                     : "text-hom-gold hover:bg-hom-gold/10"
                     }`}
                 >
