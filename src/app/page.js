@@ -5,6 +5,8 @@ import AboutUs from "@/components/AboutUs";
 import Services from "@/components/Services";
 import PortfolioGallery from "@/components/PortfolioGallery";
 import Testimonials from "@/components/Testimonials";
+import GetInTouch from "@/components/GetInTouch";
+// import SocialFollow from "@/components/SocialFollow";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -19,6 +21,8 @@ export default function Home() {
 
       <Testimonials />
        <AboutUs />
+      <GetInTouch />
+      {/* <SocialFollow /> */}
       <Footer />
     </main>
   );

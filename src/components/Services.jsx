@@ -74,7 +74,7 @@ const CardItem = ({ card, i, smoothProgress, totalCards }) => {
         opacity,
         zIndex: totalCards - i,
       }}
-      className={`absolute w-full h-full rounded-[3rem] text-hom-gold shadow-2xl flex flex-col justify-end border border-hom-gold/50 origin-bottom overflow-hidden bg-black`}
+      className={`absolute w-full h-full rounded-[1rem] text-hom-gold shadow-2xl flex flex-col justify-end border border-hom-gold/50 origin-bottom overflow-hidden bg-black`}
     >
       <Image
         src={card.image}
@@ -141,7 +141,7 @@ export default function SwagStyleCards() {
   const totalLength = word1.length + word2.length;
 
   return (
-    <section ref={containerRef} className="relative h-[500vh] bg-white overflow-x-clip">
+    <section id="services" ref={containerRef} className="relative h-[500vh] bg-white overflow-x-clip">
       {/* Huge Sticky Text behind cards */}
       <div
         className="sticky top-0 h-screen w-full items-center justify-center overflow-hidden z-0 pointer-events-none hidden md:flex"
@@ -183,7 +183,7 @@ export default function SwagStyleCards() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-4xl font-noto-serif-display border border-hom-gold/50  text-hom-darkgold tracking-widest uppercase"
+              className="text-4xl font-aboreto font-medium border border-hom-gold/50  text-hom-darkgold tracking-widest uppercase"
             >
               Our<span className="text-black">  Services</span>
             </motion.h2>

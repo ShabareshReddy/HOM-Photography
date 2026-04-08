@@ -9,7 +9,7 @@ export default function Navbar() {
   // Scroll listener to update active link
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["portfolio", "services", "reviews"];
+      const sections = ["home", "portfolio", "services", "reviews", "about", "contact"];
       let current = "";
 
       for (const section of sections) {
@@ -24,8 +24,8 @@ export default function Navbar() {
         }
       }
 
-      // If at top of page, home is active
-      if (window.scrollY < 100 && !current) {
+      // If at top of page, home is naturally active
+      if (window.scrollY < 100) {
         current = "home";
       }
 
@@ -45,10 +45,13 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Home", href: "/", id: "home" },
-    { name: "Portfolio", href: "#portfolio", id: "portfolio" },
+    { name: "Home", href: "#home", id: "home" },
+
     { name: "Services", href: "#services", id: "services" },
+    { name: "Portfolio", href: "#portfolio", id: "portfolio" },
     { name: "Reviews", href: "#reviews", id: "reviews" },
+    { name: "About", href: "#about", id: "about" },
+    { name: "Contact", href: "#contact", id: "contact" },
   ];
 
   return (
@@ -59,22 +62,22 @@ export default function Navbar() {
           {/* Logo */}
           <div className="relative inline-block z-50">
             <Link
-              href="/"
+              href="#home"
               onClick={() => handleLinkClick("home")}
-              className="font-playfair-sc text-3xl md:text-6xl text-hom-gold/100 tracking-wide"
+              className="font-playfair-sc text-5xl md:text-6xl text-hom-gold/100 tracking-wide leading-none"
             >
               HOM
             </Link>
 
-            {/* Overlay text */}
-            <span className="absolute top-6 left-1/2 -translate-x-1/2 -translate-y-1/3 tracking-loose font-birthstone text-black font-medium text-3xl md:text-4xl pointer-events-none">
+            {/* Overlay text — percentage top keeps it centred over HOM at every size */}
+            <span className="absolute top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 tracking-loose font-birthstone text-black font-medium text-2xl md:text-4xl pointer-events-none whitespace-nowrap">
               Photography
             </span>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center justify-center">
-            <div className="flex font-aboreto items-center bg-white/90 backdrop-blur-xs rounded-full px-2 py-1 shadow-md space-x-2">
+            <div className="flex font-aboreto items-center bg-white/90 backdrop-blur-xs rounded-full px-2 py-1 shadow-md space-x-0">
               {navLinks.map((link) => (
                 <Link
                   key={link.id}
@@ -92,30 +95,6 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Hamburger Button */}
-          <div className="md:flex hidden items-center md:!hidden z-50">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-black bg-white/80 rounded-full shadow-md backdrop-blur-sm focus:outline-none"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMobileMenuOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path d="M4 6h16M4 12h16m-7 6h7" />
-                )}
-              </svg>
-            </button>
-          </div>
-
-          {/* We need to use slightly different classes for rendering hamburger button to actually show up on mobile. */}
           <div className="md:hidden z-50">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -1,9 +1,15 @@
-import {Bodoni_Moda,Space_Grotesk,Noto_Serif_Display, Instrument_Serif, Tangerine, Birthstone, Aboreto, Bodoni_Moda_SC, Inter, Playfair_Display,Playfair_Display_SC } from "next/font/google";
+import {Bodoni_Moda,Space_Grotesk,Cormorant_Garamond, Noto_Serif_Display, Instrument_Serif, Tangerine, Birthstone, Aboreto, Bodoni_Moda_SC, Inter, Playfair_Display,Playfair_Display_SC } from "next/font/google";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant-garamond",
+  style: ["normal", "italic"],
 });
 
 const notoSerifDisplay = Noto_Serif_Display({
@@ -82,9 +88,9 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${aboreto.variable} ${notoSerifDisplay.variable} ${instrumentSerif.variable} ${tangerine.variable} ${playfairDisplaySC.variable} ${birthstone.variable} ${spaceGrotesk.variable} ${bodoniModa.variable} ${bodoniModaSC.variable} ${inter.variable} ${playfairDisplay.variable}  h-full antialiased`}
+      className={`${aboreto.variable} ${cormorantGaramond.variable} ${notoSerifDisplay.variable} ${instrumentSerif.variable} ${tangerine.variable} ${playfairDisplaySC.variable} ${birthstone.variable} ${spaceGrotesk.variable} ${bodoniModa.variable} ${bodoniModaSC.variable} ${inter.variable} ${playfairDisplay.variable}  h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-white  text-black">{children}</body>
+      <body className="min-h-full flex flex-col font-sans bg-white text-black" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

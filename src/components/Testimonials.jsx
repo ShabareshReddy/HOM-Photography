@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  LUXURY_EASE,
+  letterVariant,
+  wordContainer,
+  fadeSlideUp,
+  clipReveal,
+  viewportOnce,
+} from "@/lib/motionVariants";
 
 const reviewsData = [
   {
-    author: "Olivia & James",
+    author: "Shabaresh Reddy",
     text: "Working with this photography team has been an absolute dream. From the moment we booked them, they were attentive to every single detail. Their ability to capture raw emotion and timeless beauty is unparalleled. Every time we look at our photos, we are transported back to those magical moments. Truly unforgettable work.",
   },
   {
@@ -22,9 +30,38 @@ const reviewsData = [
   },
   {
     author: "William & Charlotte",
-    text: "Beyond thrilled with our anniversary shoot! They found the absolute perfect angles and the final delivery exceeded our wildest expectations. What stands out most is the film-like quality and the nostalgic, warm feel of the edits. We will definitely be coming back for all our future milestones.",
+    text: "Beyond thrilled with our anniversary shoot! They found the absolute perfect angles and the final delivery exceeded our wildest expectations.",
   }
 ];
+
+/* ── Kinetic split-word heading ─────────────────── */
+function KineticWord({ text, delay = 0, stagger = 0.045 }) {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      style={{ display: "inline-block", flexWrap: "wrap" }}
+      variants={wordContainer(stagger, delay)}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      aria-label={text}
+    >
+      {words.map((word, wIdx) => (
+        <span key={wIdx} style={{ display: "inline-block", whiteSpace: "nowrap" }} className="mr-2">
+            {word.split("").map((char, i) => (
+            <motion.span
+                key={i}
+                variants={letterVariant}
+                style={{ display: "inline-block" }}
+            >
+                {char}
+            </motion.span>
+            ))}
+        </span>
+      ))}
+    </motion.span>
+  );
+}
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,27 +74,37 @@ export default function Testimonials() {
     setCurrentIndex((prev) => (prev - 1 + reviewsData.length) % reviewsData.length);
   };
 
+  // Stacked animation logic: staggered edges like the image without back-text
   const getCardAnimation = (relativeIndex) => {
-    switch (relativeIndex) {
-      case 0:
-        return { x: 0, y: 0, rotate: 0, scale: 1, zIndex: 50, opacity: 1, filter: "blur(0px) brightness(1)" };
-      case 1:
-        return { x: 15, y: 20, rotate: 2.5, scale: 0.97, zIndex: 40, opacity: 1, filter: "blur(0.5px) brightness(0.92)" };
-      case 2:
-        return { x: -15, y: 40, rotate: -2, scale: 0.94, zIndex: 30, opacity: 1, filter: "blur(1px) brightness(0.85)" };
-      case 3:
-        return { x: 10, y: 60, rotate: 3.5, scale: 0.91, zIndex: 20, opacity: 0.9, filter: "blur(1.5px) brightness(0.70)" };
-      case 4:
-        return { x: -10, y: 80, rotate: -3, scale: 0.88, zIndex: 10, opacity: 0.8, filter: "blur(2px) brightness(0.55)" };
-      default:
-        return { opacity: 0, scale: 0.8 };
-    }
+    // 0 is top
+    // 1-4 are behind
+
+    // Stagger logic inspired by the image's organic pile
+    const offsets = [
+      { x: 0, y: 0, rotate: 0 },
+      { x: 10, y: 12, rotate: 3 },
+      { x: -8, y: 24, rotate: -2 },
+      { x: 14, y: 36, rotate: 4 },
+      { x: -12, y: 48, rotate: -3 },
+    ];
+
+    const currentOffset = offsets[relativeIndex] || { x: 0, y: relativeIndex * 12, rotate: 0 };
+
+    return {
+      x: currentOffset.x,
+      y: currentOffset.y,
+      rotate: currentOffset.rotate,
+      scale: 1,
+      zIndex: 50 - relativeIndex,
+      opacity: 1 - (relativeIndex * 0.1),
+      transition: { duration: 0.6, ease: LUXURY_EASE }
+    };
   };
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&display=swap');
 
         .font-cormorant {
           font-family: 'Cormorant', serif;
@@ -67,154 +114,206 @@ export default function Testimonials() {
           font-family: 'Pinyon Script', cursive;
         }
 
-        .paper-texture {
-          background-color: #f8f6f2;
-          background-image: 
-            radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.02) 100%),
-            url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
-          box-shadow: 
-            0 25px 60px -10px rgba(0,0,0,0.6),
-            0 0 30px rgba(0,0,0,0.1) inset;
+        .font-bodoni {
+          font-family: 'Bodoni Moda', serif;
         }
 
-        .tape {
+        .paper-card {
+          background-color: #ffffff;
+          background-image: 
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+          border: 1.5px solid #ebe5df;
+        }
+
+        .tape-accent {
           background: linear-gradient(to right, #e3dac9 0%, #ede8dd 50%, #e3dac9 100%);
           box-shadow: 
-            0 2px 4px rgba(0,0,0,0.2), 
-            inset 0 0 1px rgba(255,255,255,0.6);
-          border-left: 1px solid rgba(0,0,0,0.05);
-          border-right: 1px solid rgba(0,0,0,0.05);
-        }
-
-        @keyframes slowZoom {
-          0% { transform: scale(1); }
-          100% { transform: scale(1.08); }
-        }
-        
-        .bg-zoom {
-          animation: slowZoom 25s ease-in-out infinite alternate;
+            0 1px 2px rgba(0,0,0,0.05), 
+            inset 0 0 1px rgba(255,255,255,0.8);
+          opacity: 0.6;
         }
       `}</style>
 
-      <section id="reviews" className="relative shrink-0 flex flex-col items-center justify-center py-20 min-h-[100vh] overflow-hidden bg-[#0a0a0a]">
-        {/* Background Layers */}
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed blur-[3px] bg-zoom opacity-80"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509927083803-4bd519298ac4?auto=format&fit=crop&q=80&w=2400&sat=-100')" }}
-        ></div>
-        <div className="absolute inset-0 z-0 bg-black/50"></div>
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/90 via-transparent to-transparent"></div>
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/80 via-transparent to-black/50"></div>
-        <div
-          className="absolute inset-0 z-0 opacity-[0.10] pointer-events-none mix-blend-overlay"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
-        ></div>
+      <section id="reviews" className="relative py-24 px-6 md:px-12 lg:px-20 bg-white overflow-hidden min-h-screen flex items-center">
 
-        {/* Section Headings */}
-        <div className="relative z-30 text-center w-full mb-10 md:mb-16 mt-8 md:mt-0">
-          <p className="font-aboreto text-[#dbd3c5] tracking-[0.3em] text-sm md:text-md uppercase mb-4 opacity-90">Testimonials</p>
+        <div className="max-w-7xl mx-auto w-full relative z-10 pt-12">
+          {/* Section Heading */}
+          <div className="flex justify-center mb-16 md:mb-24">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-100px" }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="text-3xl md:text-4xl font-aboreto font-medium border border-hom-gold/70 px-5 py-2 text-hom-darkgold tracking-widest uppercase"
+            >
+              Testimo<span className="text-black">Nials</span>
+            </motion.h2>
+          </div>
 
-        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-        {/* Desktop & Mobile Unified Wrapper */}
-        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-8 z-20 flex flex-col items-center justify-center">
+            {/* ══════════════ LEFT COLUMN: TEXT ══════════════ */}
+            <div className="flex flex-col">
 
-          {/* Stacked Cards Container */}
-          <div className="relative w-[95%] sm:w-full max-w-[550px] h-[520px] sm:h-[550px] perspective-[1000px] flex items-start justify-center">
+              <h2 className="font-instrument-serif text-5xl md:text-7xl lg:text-8xl leading-[1.1] text-[#1a1a1a] mb-8">
+                <KineticWord text="The " delay={0.1} />
+                <span className="italic tracking-wide text-hom-gold"><KineticWord text="Moments" delay={0.2} stagger={0.06}/></span> <br />
+                <KineticWord text="We Cherish" delay={0.6} stagger={0.06}/>
+              </h2>
 
-            {/* Elegant Overlay Chevrons directly on the card stack - Responsive */}
-            <div className="absolute inset-x-[-15px] sm:inset-x-[-30px] top-[40%] md:top-[42%] -translate-y-1/2 flex justify-between z-[60] pointer-events-none">
-              <button
-                onClick={prevSlide}
-                className="p-3 sm:p-4 bg-black/40 hover:bg-black/60 border border-white/20  rounded-full text-white transition-all shadow-xl pointer-events-auto hover:-translate-x-1"
-                aria-label="Previous review"
+              <motion.div 
+                initial={{ width: 0 }} 
+                whileInView={{ width: 64 }} 
+                viewport={viewportOnce} 
+                transition={{ duration: 0.8, delay: 0.8, ease: LUXURY_EASE }}
+                className="h-[2px] bg-hom-gold mb-8 lg:mb-12" 
+              />
+
+              <motion.p 
+                variants={fadeSlideUp(1.0)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                className="font-cormorant text-xl md:text-2xl text-[#3d3028] italic leading-relaxed max-w-sm opacity-90"
               >
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </button>
+                {"\u201CEvery click of the shutter is a promise kept. Here is what our families have to say about the journeys we've shared.\u201D"}
+              </motion.p>
 
-              <button
-                onClick={nextSlide}
-                className="p-3 sm:p-4 bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md rounded-full text-white transition-all shadow-xl pointer-events-auto hover:translate-x-1"
-                aria-label="Next review"
+              <motion.div 
+                variants={fadeSlideUp(1.2)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                className="mt-12 flex items-center space-x-6"
               >
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </button>
+                <div className="flex space-x-2">
+                  {reviewsData.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1 rounded-full transition-all duration-300 ${currentIndex === i ? 'bg-hom-gold w-8' : 'bg-[#ebe5df] w-2'}`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
             </div>
 
-            {reviewsData.map((review, i) => {
-              const relativeIndex = (i - currentIndex + reviewsData.length) % reviewsData.length;
+            {/* ══════════════ RIGHT COLUMN: SIMPLIFIED STACK ══════════════ */}
+            <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.0, delay: 0.4, ease: LUXURY_EASE }}
+                viewport={viewportOnce}
+                className="relative flex items-center justify-center lg:justify-end pr-4 md:pr-10"
+            >
 
-              return (
-                <motion.div
-                  key={i}
-                  initial={false}
-                  animate={getCardAnimation(relativeIndex)}
-                  transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-                  onClick={relativeIndex !== 0 ? () => setCurrentIndex(i) : undefined}
-                  className={`absolute w-full h-[420px] sm:h-[450px] md:h-[480px] ${relativeIndex !== 0 ? 'cursor-pointer' : ''}`}
-                  style={{ transformOrigin: "center center" }}
-                  whileHover={relativeIndex !== 0 ? { scale: relativeIndex === 1 ? 0.98 : 0.95 } : {}}
-                >
-                  {/* Paper Card Inner */}
-                  <div className="paper-texture relative p-6 sm:p-8 md:p-10 rounded-sm mx-auto h-full w-full flex flex-col justify-between">
-
-                    {/* Taped Effect */}
-                    <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-30 sm:w-34 h-6 sm:h-8 tape z-20 mix-blend-multiply opacity-95 ${i % 2 === 0 ? 'rotate-[-2.5deg]' : 'rotate-[1.5deg]'}`}></div>
-
-                    {/* Top Brand Name */}
-                    <p className="text-center text-[0.55rem] sm:text-[0.6rem] tracking-[0.4em] text-gray-500 uppercase font-sans mb-3 sm:mb-4 opacity-80 pt-1 pointer-events-none">
-                      House of Moments
-                    </p>
-
-                    {/* Header / Stars */}
-                    <div className="flex justify-between items-end mb-3 sm:mb-4 pointer-events-none">
-                      <h2 className="font-pinyon text-4xl sm:text-5xl md:text-6xl text-[#1a1a1a] leading-none transform -translate-y-1">
-                        Review
-                      </h2>
-                      <div className="text-[#1a1a1a] text-xs sm:text-sm md:text-lg tracking-[0.2em] pb-1 opacity-90">
-                        ★★★★★
-                      </div>
-                    </div>
-
-                    {/* Divider */}
-                    <hr className="border-t border-gray-400/50 mb-4 sm:mb-6" />
-
-                    {/* Review content */}
-                    <div className="flex-grow flex items-center justify-center pointer-events-none">
-                      <p className="font-cormorant text-[1rem] sm:text-[1.05rem] md:text-xl text-[#2a2a2a] italic leading-[1.6] md:leading-[1.7] text-center px-0 sm:px-2 md:px-4">
-                        &ldquo;{review.text}&rdquo;
-                      </p>
-                    </div>
-
-                    {/* Signature */}
-                    <div className="mt-4 sm:mt-6 text-right pr-2 md:pr-4 pointer-events-none">
-                      <p className="font-pinyon text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a]">
-                        {review.author}
-                      </p>
-                    </div>
-
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Unified Dots indicator */}
-          <div className="mt-8 md:mt-12 flex space-x-3 z-30">
-            {reviewsData.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentIndex(i)}
-                className={`h-[6px] rounded-full transition-all duration-500 shadow-md ${currentIndex === i ? 'bg-white w-8 opacity-100' : 'bg-white/70 w-2 opacity-50 hover:opacity-100'}`}
-                aria-label={`Go to slide ${i + 1}`}
+              {/* Botanical Decoration - Top Left */}
+              <motion.img
+                src="/leaf-palm.png"
+                alt=""
+                className="absolute -top-16 -left-12 w-48 h-auto opacity-40 z-0 pointer-events-none"
+                initial={{ rotate: -15, y: -20 }}
+                animate={{ rotate: [-15, -12, -15], y: [-20, -10, -20] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               />
-            ))}
-          </div>
 
+              {/* Botanical Decoration - Bottom Right */}
+              <motion.img
+                src="/leaf-tropical.png"
+                alt=""
+                className="absolute -bottom-20 -right-20 w-56 h-auto opacity-30 z-0 pointer-events-none"
+                initial={{ rotate: 10, y: 20 }}
+                animate={{ rotate: [10, 15, 10], y: [20, 10, 20] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              />
+
+              <div className="relative w-full max-w-[460px] h-[520px] md:h-[580px] flex items-start justify-center overflow-visible">
+
+                {/* Navigation Arrows on Edges */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-[-20px] md:left-[-60px] top-1/2 -translate-y-1/2 p-3 border border-hom-gold rounded-full text-hom-gold hover:bg-hom-gold hover:text-white transition-all z-[70] bg-white/50 backdrop-blur-sm"
+                  aria-label="Previous review"
+                >
+                  <svg className="w-5 h-5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-[-20px] md:right-[-60px] top-1/2 -translate-y-1/2 p-3 border border-hom-gold rounded-full text-hom-gold hover:bg-hom-gold hover:text-white transition-all shadow-md z-[70] bg-white/50 backdrop-blur-sm"
+                  aria-label="Next review"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+
+                {reviewsData.map((review, i) => {
+                  const relativeIndex = (i - currentIndex + reviewsData.length) % reviewsData.length;
+                  const isTop = relativeIndex === 0;
+
+                  return (
+
+                    <motion.div
+                      key={i}
+                      style={{ position: "absolute" }}
+                      initial={false}
+                      animate={getCardAnimation(relativeIndex)}
+                      className="w-full h-[450px] md:h-[500px]"
+                    >
+                      <div className="paper-card relative p-6 sm:p-10 rounded-sm mx-auto h-full w-full flex flex-col justify-between overflow-hidden">
+
+                        {/* Only render content for the top card */}
+                        {isTop ? (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex flex-col h-full overflow-hidden"
+                          >
+                            <p className="text-center text-[0.5rem] tracking-[0.4em] text-gray-400 uppercase font-sans mb-3 pt-1">
+                              House of Moments
+                            </p>
+
+                            <div className="flex justify-between items-end mb-3">
+                              <h2 className="font-pinyon text-5xl md:text-6xl text-[#2b201a] leading-none transform -translate-y-1">
+                                Review
+                              </h2>
+                              <div className="text-hom-gold/70 text-sm tracking-[0.2em] pb-1">
+                                ★★★★★
+                              </div>
+                            </div>
+
+                            <hr className="border-t border-[#f0ebe5] mb-6" />
+
+                            <div className="flex-grow flex items-center justify-center overflow-hidden mb-6">
+                              <p className="font-cormorant text-[1rem] md:text-[1.2rem] text-[#3d3028] italic leading-relaxed text-center px-1 overflow-y-auto no-scrollbar max-h-full">
+                                {`\u201C${review.text}\u201D`}
+                              </p>
+                            </div>
+
+                            <div className="text-right pr-2">
+                              <p className="font-pinyon text-4xl md:text-5xl text-[#2b201a]">
+                                &mdash; {review.author}
+                              </p>
+                            </div>
+                          </motion.div>
+                        ) : (
+                          /* Plain back-card decoration */
+                          <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-10 h-2 tape-accent rounded-full absolute top-4 left-1/2 -translate-x-1/2" />
+                          </div>
+                        )}
+
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
     </>
