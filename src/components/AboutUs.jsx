@@ -1,99 +1,52 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import {
-  LUXURY_EASE,
-  letterVariant,
-  wordContainer,
-  clipReveal,
-  fadeSlideUp,
-  fadeUp,
-  viewportOnce,
-} from "@/lib/motionVariants";
-
-/* ── Inner-parallax portrait ───────────────────────────────── */
-function ParallaxImage({ src, alt }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [-40, 40]);
-
-  return (
-    <div ref={ref} className="w-full h-full overflow-hidden">
-      <motion.img
-        src={src}
-        alt={alt}
-        style={{ y, scale: 1.12 }}
-        className="w-full h-full object-cover object-center block"
-        transition={{ ease: LUXURY_EASE }}
-        draggable={false}
-      />
-    </div>
-  );
-}
-
-/* ── Kinetic word split ─────────────────────────────────────── */
-function KineticWord({ text, className, delay = 0, stagger = 0.04 }) {
-  const chars = text.split("");
-  return (
-    <motion.span
-      className={`inline-flex flex-wrap ${className}`}
-      variants={wordContainer(stagger, delay)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      aria-label={text}
-    >
-      {chars.map((c, i) => (
-        <motion.span
-          key={i}
-          variants={letterVariant}
-          style={{ display: "inline-block" }}
-        >
-          {c === " " ? "\u00A0" : c}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-}
+import { motion, useInView } from "framer-motion";
 
 export default function AboutUs() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const fadeUp = (delay = 0) => ({
+    hidden: { opacity: 0, y: 28 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] },
+    },
+  });
+
+  const fadeRight = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 1.0, delay: 0.2, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
   const leafFloat = (delay = 0) => ({
     hidden: { opacity: 0, scale: 0.88 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 1.4, delay, ease: LUXURY_EASE },
+      transition: { duration: 1.4, delay, ease: [0.22, 1, 0.36, 1] },
     },
   });
-
-  const fadeRight = {
-    hidden: { opacity: 0, x: 60, filter: "blur(8px)" },
-    visible: {
-      opacity: 1,
-      x: 0,
-      filter: "blur(0px)",
-      transition: { duration: 1.1, delay: 0.3, ease: LUXURY_EASE },
-    },
-  };
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Marcellus&display=swap');
 
+        /* ── Section bg ── */
         .ab-section {
           background-color: #f0ebe3;
           position: relative;
           overflow: hidden;
         }
 
+        /* Subtle film grain on whole section */
         .ab-section::before {
           content: '';
           position: absolute;
@@ -105,10 +58,13 @@ export default function AboutUs() {
           background-size: 250px 250px;
         }
 
+        /* ── BOTANICAL LEAF DECORATORS ── */
+
+        /* Top-left palm leaf */
         .ab-leaf-tl {
           position: absolute;
-          top: 90px;
-          left: 180px;
+          top: 200px;
+          left: 200px;
           width: clamp(180px, 18vw, 280px);
           opacity: 0.55;
           rotate: 40deg;
@@ -117,12 +73,23 @@ export default function AboutUs() {
           z-index: 1;
         }
 
+       
+
+
+      
+
+        
+
+        /* ── LEFT SIDE ── */
+
         .ab-name {
           font-family: 'Cormorant', serif;
           font-weight: 300;
+          // font-style: italic;
           color: #2b201a;
           line-height: 0.9;
           letter-spacing: -0.01em;
+          leading-none
         }
 
         .ab-sub {
@@ -162,6 +129,8 @@ export default function AboutUs() {
           letter-spacing: 0.04em;
           line-height: 1.1;
         }
+
+        /* ── RIGHT SIDE ── */
 
         .ab-img-outer {
           background-color: #c9b99a;
@@ -222,16 +191,17 @@ export default function AboutUs() {
           pointer-events: none;
           z-index: 0;
         }
+        
 
+        /* ── LEAF STRIP ── row of sample small leaves under the content */
         .ab-leaf-strip {
           display: flex;
           align-items: center;
-          gap: clamp(20px, 9vw, 90px);
+          gap: clamp(20px, 4vw, 48px);
           justify-content: center;
           padding-top: clamp(32px, 5vw, 56px);
           padding-bottom: 4px;
           position: relative;
-          
           z-index: 10;
         }
 
@@ -241,12 +211,14 @@ export default function AboutUs() {
           align-items: center;
           gap: 10px;
         }
+          
 
         .ab-leaf-strip-img {
           width: clamp(52px, 7vw, 82px);
           opacity: 0.9;
           transition: opacity 0.4s ease, transform 0.4s ease;
         }
+         
 
         .ab-leaf-strip-img:hover {
           opacity: 1;
@@ -270,7 +242,12 @@ export default function AboutUs() {
         }
 
         @media (max-width: 640px) {
-          .ab-leaf-tl { width: 130px; opacity: 0.4; }
+          .ab-leaf-tl { width: 130px ; opacity: 0.4; }
+          
+         
+        
+         
+
         }
       `}</style>
 
@@ -280,7 +257,7 @@ export default function AboutUs() {
         className="ab-section"
         aria-label="About the photographer"
       >
-        {/* ─── Botanical leaf ─── */}
+        {/* ─── Botanical leaf decorations ─── */}
         <motion.img
           src="/leaf-palm.png"
           alt=""
@@ -291,54 +268,59 @@ export default function AboutUs() {
           animate={isInView ? "visible" : "hidden"}
         />
 
+
+
+
+
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 sm:px-10 md:px-16 lg:px-20 py-16 md:py-24">
 
-          {/* Section Heading — kinetic letters */}
+          {/* Section Heading */}
           <div className="flex justify-center mb-16 md:mb-24">
-            <h2 className="text-3xl md:text-4xl font-aboreto font-medium border border-hom-gold/70 px-5 py-2 text-hom-darkgold tracking-widest uppercase">
-              <KineticWord text="About" delay={0} stagger={0.055} />
-              <span className="text-black">
-                <KineticWord text="Us" delay={0.25} stagger={0.055} />
-              </span>
+            <h2
+
+              className="text-3xl md:text-4xl font-aboreto font-medium border border-hom-gold/70 px-5 py-2 text-hom-darkgold tracking-widest uppercase"
+            >
+              About<span className="text-black"> Us</span>
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 md:gap-16 lg:gap-20 items-center">
 
-            {/* ══════ LEFT TEXT ══════ */}
+            {/* ══════════════ LEFT TEXT ══════════════ */}
             <div className="flex flex-col justify-center max-w-[540px]">
 
-              {/* Big name — per-letter */}
+              {/* ── Big italic name ── */}
               <motion.div
-                variants={fadeSlideUp(0.1)}
+                variants={fadeUp(0)}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 className="relative inline-block max-w-fit"
               >
                 <h2
-                  className="ab-name relative z-10"
+                  className="ab-name  relative z-10"
                   style={{ fontSize: "clamp(4.5rem, 9vw, 8.5rem)" }}
                 >
                   I&apos;m
                   <br />
-                  Mounika
+                  Sunilkumar
                 </h2>
+
               </motion.div>
 
-              {/* Sub ── */}
+              {/* ── AND I TELL STORIES ── */}
               <motion.p
                 className="ab-sub mt-3 mb-8 md:mb-10"
-                variants={fadeSlideUp(0.22)}
+                variants={fadeUp(0.12)}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
               >
                 And I tell stories through Pictures
               </motion.p>
 
-              {/* Body ── */}
+              {/* ── Body paragraph ── */}
               <motion.p
                 className="ab-body mb-10 md:mb-14"
-                variants={fadeSlideUp(0.34)}
+                variants={fadeUp(0.22)}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
               >
@@ -349,62 +331,71 @@ export default function AboutUs() {
                 and I&apos;m here to make sure yours is felt for generations.
               </motion.p>
 
-              {/* CTA ── */}
+              {/* ── CTA — two lines ── */}
               <motion.div
-                variants={fadeSlideUp(0.46)}
+                variants={fadeUp(0.32)}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
               >
                 <a href="#contact" style={{ textDecoration: "none" }}>
                   <p className="ab-cta-top">Let&apos;s get to know each other</p>
+
                 </a>
               </motion.div>
             </div>
 
-            {/* ══════ RIGHT IMAGE — clip-path reveal + inner parallax ══════ */}
+            {/* ══════════════ RIGHT IMAGE ══════════════ */}
             <motion.div
               className="relative flex justify-center md:justify-end"
               variants={fadeRight}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
+              {/* Pale circle behind the image */}
               <div className="ab-circle" aria-hidden="true" />
 
+              {/* Wrapper controls overall image panel width */}
               <div
                 className="relative"
                 style={{ width: "clamp(220px, 28vw, 360px)" }}
               >
+                {/* Small label top-right of frame */}
                 <p className="ab-img-label" aria-hidden="true">
                   Passion, Love &amp; Life
                 </p>
 
-                {/* Clip-path reveal wrapper */}
-                <motion.div
-                  variants={clipReveal(0.5, 1.2)}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                >
-                  <div className="ab-img-outer">
-                    <div className="ab-img-inner" style={{ aspectRatio: "3 / 4" }}>
-                      <div className="ab-img-grain" aria-hidden="true" />
-                      {/* Parallax inner image */}
-                      <ParallaxImage
-                        src="/about-portrait.png"
-                        alt="Mounika — House of Moments Photographer"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
+                {/* Tan outer mat */}
+                <div className="ab-img-outer">
+                  {/* Inner bordered frame */}
+                  <div
+                    className="ab-img-inner"
+                    style={{ aspectRatio: "3 / 4" }}
+                  >
+                    {/* Grain over image */}
+                    <div className="ab-img-grain" aria-hidden="true" />
 
+                    <img
+                      src="/about-portrait.jpg"
+                      alt="Mounika — House of Moments Photographer"
+                      className="w-full h-full object-cover object-center block"
+                      style={{
+                        filter:
+                          "sepia(0.12) contrast(1.05) brightness(1.0) saturate(0.9)",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Scattered dots (bottom-right accent) */}
                 <div className="ab-dots" aria-hidden="true" />
               </div>
             </motion.div>
 
           </div>
 
-          {/* ══════ BOTANICAL LEAF STRIP ══════ */}
+          {/* ══════════════ BOTANICAL LEAF STRIP ══════════════ */}
           <motion.div
-            variants={fadeSlideUp(0.55)}
+            variants={fadeUp(0.5)}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
@@ -412,15 +403,15 @@ export default function AboutUs() {
 
             <div className="ab-leaf-strip">
               {[
-                { src: "/leaf-palm.png", label: "MOMENTS" },
-                { src: "/leaf-fern.png", label: "STORIES" },
-                { src: "/leaf-tropical.png", label: "EMOTIONS" },
-                { src: "/leaf-abstract.png", label: "MEMORIES" },
+                { src: "/leaf-palm.png", label: "Palm" },
+                { src: "/leaf-fern.png", label: "Fern" },
+                { src: "/leaf-tropical.png", label: "Tropical" },
+                { src: "/leaf-abstract.png", label: "Minimal" },
               ].map(({ src, label }, i) => (
                 <motion.div
                   key={label}
                   className="ab-leaf-strip-item"
-                  variants={fadeSlideUp(0.6 + i * 0.1)}
+                  variants={fadeUp(0.55 + i * 0.1)}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                 >

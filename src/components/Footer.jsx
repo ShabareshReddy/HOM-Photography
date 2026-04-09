@@ -5,24 +5,24 @@ import { motion } from "framer-motion";
 export default function LuxuryFooter() {
   return (
     <footer className="w-full bg-[#050505] text-[#D1D1D1] py-20 px-6 flex flex-col items-center border-t border-[#1A1A1A]">
-      <motion.h2 
+      <motion.h2
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-3xl md:text-5xl font-playfair-sc tracking-[0.2em] text-white mb-4 text-center"
+        className="text-3xl md:text-5xl font-aboreto tracking-[0.2em] text-white mb-4 text-center"
       >
         HOUSE OF MOMENTS
       </motion.h2>
-      
+
       <motion.p
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-        className="text-sm italic text-[#888888] mb-12 text-center"
+        className="text-sm font-space-grotesk text-[#888888] mb-12 text-center"
       >
-        Where memories become timeless.
+        capturing the moments that matter,<br />photography by house of moments
       </motion.p>
 
       <motion.div

@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { fadeSlideUp, clipReveal, wordContainer, letterVariant, viewportOnce, LUXURY_EASE } from "@/lib/motionVariants";
 
 // Custom Instagram Icon
 const InstagramIcon = ({ className }) => (
@@ -37,35 +36,6 @@ const FacebookIcon = ({ className }) => (
   </svg>
 );
 
-/* ── Kinetic split-word heading ─────────────────── */
-function KineticWord({ text, delay = 0, stagger = 0.045 }) {
-  const words = text.split(" ");
-  return (
-    <motion.span
-      style={{ display: "inline-block", flexWrap: "wrap" }}
-      variants={wordContainer(stagger, delay)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      aria-label={text}
-    >
-      {words.map((word, wIdx) => (
-        <span key={wIdx} style={{ display: "inline-block", whiteSpace: "nowrap" }} className="mr-3">
-            {word.split("").map((char, i) => (
-            <motion.span
-                key={i}
-                variants={letterVariant}
-                style={{ display: "inline-block" }}
-            >
-                {char}
-            </motion.span>
-            ))}
-        </span>
-      ))}
-    </motion.span>
-  );
-}
-
 export default function SocialFollow() {
   return (
     <section className="px-6 py-6 bg-white max-w-[1600px] mx-auto">
@@ -85,43 +55,25 @@ export default function SocialFollow() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10 w-full px-8 md:px-20">
 
           {/* Left Content */}
-          <div className="text-white space-y-5">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-white space-y-5"
+          >
             <div className="space-y-3">
-              <motion.h4 
-                variants={fadeSlideUp(0)} 
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="text-hom-gold font-medium tracking-[0.2em] uppercase text-[9px]"
-              >
-                  Digital sanctuary
-              </motion.h4>
+              <h4 className="text-hom-gold font-medium tracking-[0.2em] uppercase text-[9px]">Digital sanctuary</h4>
               <h2 className="text-3xl md:text-4xl font-playfair leading-tight">
-                <KineticWord text="Capture The" delay={0.1} /> <br />
-                <span className="italic font-light">
-                  <KineticWord text="Unseen Moments" delay={0.4} />
-                </span>
+                Capture The <br />
+                <span className="italic font-light">Unseen Moments</span>
               </h2>
-              <motion.p 
-                variants={fadeSlideUp(0.6)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="text-gray-400 text-xs max-w-xs leading-relaxed font-light opacity-80"
-              >
+              <p className="text-gray-400 text-xs max-w-xs leading-relaxed font-light opacity-80">
                 Our digital feed is an extension of our soul. Follow us for an intimate look into the art of storytelling.
-              </motion.p>
+              </p>
             </div>
 
-            <motion.div 
-               variants={wordContainer(0.1, 0.8)}
-               initial="hidden"
-               whileInView="visible"
-               viewport={viewportOnce}
-               className="flex flex-col sm:flex-row gap-5 items-start"
-            >
+            <div className="flex flex-col sm:flex-row gap-5 items-start">
               <motion.button
-                variants={fadeSlideUp(0)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="group px-7 py-3.5 bg-white text-black rounded-full text-xs font-bold flex items-center gap-3 transition-all duration-500 shadow-lg"
@@ -132,25 +84,23 @@ export default function SocialFollow() {
               </motion.button>
 
               <motion.button
-                variants={fadeSlideUp(0)}
                 whileHover={{ x: 3 }}
                 className="py-3.5 text-white/30 hover:text-white transition-colors flex items-center gap-2 group text-[9px] tracking-widest uppercase font-bold"
               >
                 Contact Us
                 <div className="w-6 h-[1px] bg-white/10 group-hover:w-10 group-hover:bg-hom-gold transition-all duration-500"></div>
               </motion.button>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
           {/* Right Content - Staggered Profile Cards */}
           <div className="relative h-[400px] flex items-center justify-center lg:justify-end">
 
             {/* Facebook Card (BACK) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, x: 40, y: 20, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, x: -80, y: -30, rotate: -8, filter: 'blur(0px)' }}
-              viewport={viewportOnce}
-              transition={{ duration: 1.2, delay: 0.5, ease: LUXURY_EASE }}
+              initial={{ opacity: 0, scale: 0.9, x: 40, y: 20 }}
+              whileInView={{ opacity: 1, x: -80, y: -30, rotate: -8 }}
+              transition={{ duration: 1, ease: "easeOut" }}
               className="absolute w-[240px] md:w-[260px] aspect-[1.3/1] 
     bg-[#f8f9fa] rounded-[1.5rem] 
     border border-white/20 
@@ -174,13 +124,12 @@ export default function SocialFollow() {
             </motion.div>
 
 
-            {/* Instagram Card (FRONT) with ClipReveal + Bounce */}
+            {/* Instagram Card (FRONT) */}
             <motion.div
-              initial={{ clipPath: 'inset(100% 0% 0% 0%)', opacity: 0, y: 40, filter: 'blur(8px)' }}
-              whileInView={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, y: 0, rotate: 2, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 2 }}
               whileHover={{ rotate: 0, scale: 1.06 }}
-              viewport={viewportOnce}
-              transition={{ duration: 1.4, delay: 0.4, type: "spring", bounce: 0.3 }}
+              transition={{ duration: 1, type: "spring", damping: 20 }}
               className="relative w-[260px] md:w-[280px] aspect-[4/5] 
     bg-white rounded-[1.2rem] 
     border border-hom-gold/50 

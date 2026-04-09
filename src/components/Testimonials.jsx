@@ -2,14 +2,6 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  LUXURY_EASE,
-  letterVariant,
-  wordContainer,
-  fadeSlideUp,
-  clipReveal,
-  viewportOnce,
-} from "@/lib/motionVariants";
 
 const reviewsData = [
   {
@@ -33,35 +25,6 @@ const reviewsData = [
     text: "Beyond thrilled with our anniversary shoot! They found the absolute perfect angles and the final delivery exceeded our wildest expectations.",
   }
 ];
-
-/* ── Kinetic split-word heading ─────────────────── */
-function KineticWord({ text, delay = 0, stagger = 0.045 }) {
-  const words = text.split(" ");
-  return (
-    <motion.span
-      style={{ display: "inline-block", flexWrap: "wrap" }}
-      variants={wordContainer(stagger, delay)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      aria-label={text}
-    >
-      {words.map((word, wIdx) => (
-        <span key={wIdx} style={{ display: "inline-block", whiteSpace: "nowrap" }} className="mr-2">
-            {word.split("").map((char, i) => (
-            <motion.span
-                key={i}
-                variants={letterVariant}
-                style={{ display: "inline-block" }}
-            >
-                {char}
-            </motion.span>
-            ))}
-        </span>
-      ))}
-    </motion.span>
-  );
-}
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -97,7 +60,7 @@ export default function Testimonials() {
       scale: 1,
       zIndex: 50 - relativeIndex,
       opacity: 1 - (relativeIndex * 0.1),
-      transition: { duration: 0.6, ease: LUXURY_EASE }
+      transition: { duration: 0.5, ease: "easeInOut" }
     };
   };
 
@@ -140,10 +103,7 @@ export default function Testimonials() {
           {/* Section Heading */}
           <div className="flex justify-center mb-16 md:mb-24">
             <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-100px" }}
-              transition={{ duration: 1, ease: "easeOut" }}
+
               className="text-3xl md:text-4xl font-aboreto font-medium border border-hom-gold/70 px-5 py-2 text-hom-darkgold tracking-widest uppercase"
             >
               Testimo<span className="text-black">Nials</span>
@@ -153,39 +113,27 @@ export default function Testimonials() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* ══════════════ LEFT COLUMN: TEXT ══════════════ */}
-            <div className="flex flex-col">
+            <motion.div
+              initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+              whileInView={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
+              viewport={{ once: true }}
+              transition={{ duration: 5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col"
+            >
+
 
               <h2 className="font-instrument-serif text-5xl md:text-7xl lg:text-8xl leading-[1.1] text-[#1a1a1a] mb-8">
-                <KineticWord text="The " delay={0.1} />
-                <span className="italic tracking-wide text-hom-gold"><KineticWord text="Moments" delay={0.2} stagger={0.06}/></span> <br />
-                <KineticWord text="We Cherish" delay={0.6} stagger={0.06}/>
+                The <span className="italic tracking-wide text-hom-gold">Moments</span> <br />
+                We Cherish
               </h2>
 
-              <motion.div 
-                initial={{ width: 0 }} 
-                whileInView={{ width: 64 }} 
-                viewport={viewportOnce} 
-                transition={{ duration: 0.8, delay: 0.8, ease: LUXURY_EASE }}
-                className="h-[2px] bg-hom-gold mb-8 lg:mb-12" 
-              />
+              <div className="w-16 h-[2px] bg-hom-gold mb-8 lg:mb-12" />
 
-              <motion.p 
-                variants={fadeSlideUp(1.0)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="font-cormorant text-xl md:text-2xl text-[#3d3028] italic leading-relaxed max-w-sm opacity-90"
-              >
-                {"\u201CEvery click of the shutter is a promise kept. Here is what our families have to say about the journeys we've shared.\u201D"}
-              </motion.p>
+              <p className="font-cormorant text-xl md:text-2xl text-[#3d3028] italic leading-relaxed max-w-sm opacity-90">
+                &ldquo;Every click of the shutter is a promise kept. Here is what our families have to say about the journeys we&apos;ve shared.&rdquo;
+              </p>
 
-              <motion.div 
-                variants={fadeSlideUp(1.2)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
-                className="mt-12 flex items-center space-x-6"
-              >
+              <div className="mt-12 flex items-center space-x-6">
                 <div className="flex space-x-2">
                   {reviewsData.map((_, i) => (
                     <div
@@ -194,17 +142,11 @@ export default function Testimonials() {
                     />
                   ))}
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
 
             {/* ══════════════ RIGHT COLUMN: SIMPLIFIED STACK ══════════════ */}
-            <motion.div 
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.0, delay: 0.4, ease: LUXURY_EASE }}
-                viewport={viewportOnce}
-                className="relative flex items-center justify-center lg:justify-end pr-4 md:pr-10"
-            >
+            <div className="relative flex items-center justify-center lg:justify-end pr-4 md:pr-10">
 
               {/* Botanical Decoration - Top Left */}
               <motion.img
@@ -289,7 +231,7 @@ export default function Testimonials() {
 
                             <div className="flex-grow flex items-center justify-center overflow-hidden mb-6">
                               <p className="font-cormorant text-[1rem] md:text-[1.2rem] text-[#3d3028] italic leading-relaxed text-center px-1 overflow-y-auto no-scrollbar max-h-full">
-                                {`\u201C${review.text}\u201D`}
+                                &ldquo;{review.text}&rdquo;
                               </p>
                             </div>
 
@@ -311,7 +253,7 @@ export default function Testimonials() {
                   );
                 })}
               </div>
-            </motion.div>
+            </div>
 
           </div>
         </div>

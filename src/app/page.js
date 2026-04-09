@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import LoadingScreen from "@/components/LoadingScreen";
 import Hero from "@/components/Hero";
 // import TrustBanner from "@/components/TrustBanner";
 import AboutUs from "@/components/AboutUs";
@@ -13,6 +14,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <main className="min-h-screen bg-hom-black selection:bg-hom-gold selection:text-hom-black">
+      <LoadingScreen />
       <Navbar />
       <Hero />
       {/* <TrustBanner /> */}

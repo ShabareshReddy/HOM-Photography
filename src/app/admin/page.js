@@ -429,7 +429,7 @@ export default function AdminDashboard() {
         {/* Brand Area */}
         <div className="h-20 flex flex-col justify-center px-6 border-b border-white/5 bg-[#1a1b22] shrink-0">
           <h1 className="text-[22px] font-instrument-serif text-hom-gold tracking-wide">HOM Photography</h1>
-          <p className="text-[10px] text-gray-400 tracking-[0.15em] font-medium mt-0.5">STUDIO ADMIN</p>
+          <p className="text-[10px] text-gray-400 tracking-[0.15em] font-medium mt-0.5">ADMIN LOGIN</p>
         </div>
 
         {/* Navigation Tools */}

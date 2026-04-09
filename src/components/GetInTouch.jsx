@@ -1,15 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import {
-  LUXURY_EASE,
-  letterVariant,
-  wordContainer,
-  staggerGrid,
-  fadeSlideUp,
-  viewportOnce,
-} from "@/lib/motionVariants";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const contactItems = [
   {
@@ -67,8 +59,7 @@ function ContactCard({ item }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.a
-      variants={fadeSlideUp(0, 0.75)}
+    <a
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
@@ -142,49 +133,13 @@ function ContactCard({ item }) {
       >
         →
       </div>
-    </motion.a>
-  );
-}
-
-/* ── Kinetic split-word heading ─────────────────── */
-function KineticWord({ text, delay = 0, stagger = 0.045 }) {
-  const chars = text.split("");
-  return (
-    <motion.span
-      style={{ display: "inline-block", whiteSpace: "nowrap" }}
-      variants={wordContainer(stagger, delay)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      aria-label={text}
-    >
-      {chars.map((char, i) => (
-        <motion.span
-          key={i}
-          variants={letterVariant}
-          style={{ display: "inline-block" }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </motion.span>
+    </a>
   );
 }
 
 export default function GetInTouch() {
-  const sectionRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  
-  // Parallax for the decorative background blur
-  const blobY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
   return (
     <section
-      ref={sectionRef}
       id="contact"
       style={{
         background: "linear-gradient(150deg, #faf7f2 0%, #f2ece1 100%)",
@@ -206,8 +161,8 @@ export default function GetInTouch() {
         }}
       />
 
-      {/* Decorative circle blur top-right with parallax */}
-      <motion.div
+      {/* Decorative circle blur top-right */}
+      <div
         style={{
           position: "absolute",
           top: "-120px",
@@ -218,9 +173,22 @@ export default function GetInTouch() {
           background: "radial-gradient(circle, rgba(212,175,55,0.07) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
-          y: blobY,
         }}
       />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 mb-20">
+        <div className="flex justify-center">
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl md:text-3xl font-aboreto font-medium border border-hom-gold/70 px-6 py-2 text-hom-darkgold tracking-widest uppercase text-center"
+          >
+            Contact<span className="text-black">Us</span>
+          </motion.h2>
+        </div>
+      </div>
 
       <div
         style={{
@@ -237,52 +205,17 @@ export default function GetInTouch() {
       >
         {/* ── LEFT COLUMN ─────────────────────────────── */}
         <div>
-          {/* Eye icon + decorative label */}
-          <motion.div
-            variants={fadeSlideUp(0)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              marginBottom: "28px",
-            }}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9a8672"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "0.72rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "#9a8672",
-                fontWeight: 500,
-              }}
-            >
-              Let's connect
-            </span>
-          </motion.div>
 
-          {/* Main headline - Kinetic Letters */}
+          {/* Main headline */}
           <div style={{ overflow: "hidden" }}>
-            <h2
+            <motion.h2
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               style={{
                 fontFamily: "'Playfair Display', 'Bodoni MT', Georgia, serif",
-                fontSize: "clamp(3.2rem, 7vw, 6.5rem)",
+                fontSize: "clamp(2.8rem, 6vw, 4.5rem)",
                 fontWeight: 400,
                 lineHeight: 0.95,
                 letterSpacing: "-0.02em",
@@ -291,9 +224,13 @@ export default function GetInTouch() {
                 marginBottom: "4px",
               }}
             >
-              <KineticWord text="GET IN" delay={0.1} />
-            </h2>
-            <h2
+              GET IN
+            </motion.h2>
+            <motion.h2
+              initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+              whileInView={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 fontFamily: "'Playfair Display', 'Bodoni MT', Georgia, serif",
                 fontSize: "clamp(3.2rem, 7vw, 6.5rem)",
@@ -304,17 +241,14 @@ export default function GetInTouch() {
                 margin: 0,
               }}
             >
-              <KineticWord text="TOUCH" delay={0.3} />
-            </h2>
+              TOUCH
+            </motion.h2>
           </div>
 
-          {/* Thin ruled line - Animated width */}
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: 60 }}
-            viewport={viewportOnce}
-            transition={{ duration: 0.8, delay: 0.6, ease: LUXURY_EASE }}
+          {/* Thin ruled line */}
+          <div
             style={{
+              width: "60px",
               height: "1px",
               background: "linear-gradient(90deg, #c4a882, transparent)",
               margin: "32px 0 28px",
@@ -322,12 +256,7 @@ export default function GetInTouch() {
           />
 
           {/* Email */}
-          <motion.div
-            variants={fadeSlideUp(0.6)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
+          <div>
             <p
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -365,16 +294,12 @@ export default function GetInTouch() {
             >
               houseofmoments@email.com
             </a>
-          </motion.div>
+          </div>
 
           {/* Location note */}
-          <motion.p
-            variants={fadeSlideUp(0.7)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+          <p
             style={{
-              fontFamily: "'Bodoni Moda', serif",
+              fontFamily: "'badoni', serif",
               fontSize: "0.82rem",
               color: "#b0a090",
               marginTop: "40px",
@@ -382,24 +307,19 @@ export default function GetInTouch() {
               lineHeight: 1.7,
             }}
           >
-            Welcome to HOM photography. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta labore eveniet commodi consequatur amet minima fugiat velit odio, dolor et, asperiores nihil deserunt maiores autem explicabo enim accusantium architecto repellendus.
-          </motion.p>
+            Welcom To HOM photography Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta labore eveniet commodi consequatur amet minima fugiat velit odio, dolor et, asperiores nihil deserunt maiores autem explicabo enim accusantium architecto repellendus.
+          </p>
         </div>
 
         {/* ── RIGHT COLUMN ────────────────────────────── */}
-        <motion.div
-          variants={staggerGrid(0.08, 0.4)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+        <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "14px",
           }}
         >
-          <motion.p
-            variants={fadeSlideUp(0)}
+          <p
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: "0.72rem",
@@ -411,12 +331,12 @@ export default function GetInTouch() {
             }}
           >
             Find us on
-          </motion.p>
+          </p>
 
           {contactItems.map((item) => (
             <ContactCard key={item.id} item={item} />
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Responsive styles via a style tag */}

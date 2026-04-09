@@ -17,7 +17,7 @@ const AnimatedLetter = ({ char, progress, index, total, className }) => {
   const endEnter = startEnter + 0.05;
 
   const reverseIndex = total - 1 - index;
-  const startExit = 0.85 + (reverseIndex / total) * 0.1;
+  const startExit = 0.8 + (reverseIndex / total) * 0.1;
   const endExit = startExit + 0.05;
 
   const opacity = useTransform(
@@ -43,8 +43,8 @@ const AnimatedLetter = ({ char, progress, index, total, className }) => {
 };
 
 const CardItem = ({ card, i, smoothProgress, totalCards }) => {
-  const start = i * 0.2;
-  const end = start + 0.2;
+  const start = i * 0.18;
+  const end = start + 0.18;
 
   const baseRotation = i === 0 ? 0 : i % 2 === 0 ? i * -2 : i * 3;
 
@@ -133,8 +133,8 @@ export default function SwagStyleCards() {
     restDelta: 0.001,
   });
 
-  const leftLeafY = useTransform(smoothProgress, [0, 1], [50, -150]);
-  const rightLeafY = useTransform(smoothProgress, [0, 1], [-100, 100]);
+  const leftLeafY = useTransform(smoothProgress, [0, 0.9], [50, -150]);
+  const rightLeafY = useTransform(smoothProgress, [0, 0.9], [-100, 100]);
 
   const word1 = "OUR".split("");
   const word2 = "SERVICES".split("");
@@ -190,7 +190,7 @@ export default function SwagStyleCards() {
           </div>
 
           {/* LEFT LEAF FRAME */}
-          <motion.div style={{ y: leftLeafY }} className="absolute left-0 top-[10vh] h-[90vh] w-[18vw] pointer-events-none select-none flex flex-col items-start justify-center overflow-hidden">
+          <motion.div style={{ y: leftLeafY }} className="absolute left-0 top-[10vh] h-[90vh] w-[22vw] md:w-[18vw] pointer-events-none select-none flex flex-col items-start justify-center overflow-visible">
             <svg viewBox="0 0 200 900" className="w-full h-full opacity-80" preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
               {/* Main stem */}
               <path d="M40 900 Q50 700 30 500 Q10 300 60 0" stroke="#4a7c59" strokeWidth="2.5" fill="none" strokeLinecap="round" />
@@ -221,7 +221,7 @@ export default function SwagStyleCards() {
           </motion.div>
 
           {/* RIGHT LEAF FRAME (mirrored) */}
-          <motion.div style={{ y: rightLeafY }} className="absolute right-0 top-[10vh] h-[90vh] w-[18vw] pointer-events-none select-none flex flex-col items-end justify-center overflow-hidden">
+          <motion.div style={{ y: rightLeafY }} className="absolute right-0 top-[10vh] h-[90vh] w-[22vw] md:w-[18vw] pointer-events-none select-none flex flex-col items-end justify-center overflow-visible">
             <svg viewBox="0 0 200 900" className="w-full h-full opacity-80" style={{ transform: "scaleX(-1)" }} preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
               {/* Main stem */}
               <path d="M40 900 Q50 700 30 500 Q10 300 60 0" stroke="#4a7c59" strokeWidth="2.5" fill="none" strokeLinecap="round" />
